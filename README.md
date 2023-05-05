@@ -1,6 +1,6 @@
 # Package `github.com/bots-go-framework/bots-go-core`
 
-Types and interfaces used both in bot API clients &amp; [Bots FW](https://github.com/bots-go-framework)
+Types and interfaces referenced in bot API clients (like [bots-api-telegram](https://github.com/bots-go-framework/bots-api-telegram)) &amp; [Bots FW](https://github.com/bots-go-framework/bots-fw)
 
 ## [keyboard.go](keyboard.go)
 
