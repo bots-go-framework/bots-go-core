@@ -21,8 +21,5 @@ jobs:
     secrets:
       # Why 2 GitHub tokens? Consider to use only one token or document why we need 2
       gh_token: ${{ secrets.GITHUB_TOKEN }}
-
-      # This token is used to retrieve private repositories
-      GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
     with:
       disable-version-bumping: false
