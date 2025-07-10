@@ -19,6 +19,10 @@ var _ Button = (*UrlButton)(nil)
 var _ Button = (*SwitchInlineQueryButton)(nil)
 var _ Button = (*SwitchInlineQueryCurrentChatButton)(nil)
 
+func NewDataButton(text, data string) *DataButton {
+	return &DataButton{Text: text, Data: data}
+}
+
 type DataButton struct {
 	Text string
 	Data string
@@ -37,6 +41,10 @@ type UrlButton struct {
 	URL  string
 }
 
+func NewUrlButton(text, url string) *UrlButton {
+	return &UrlButton{Text: text, URL: url}
+}
+
 func (UrlButton) ButtonType() ButtonType {
 	return ButtonTypeURL
 }
@@ -50,6 +58,10 @@ type SwitchInlineQueryButton struct {
 	Query string
 }
 
+func NewSwitchInlineQueryButton(text, query string) *SwitchInlineQueryButton {
+	return &SwitchInlineQueryButton{Text: text, Query: query}
+}
+
 func (SwitchInlineQueryButton) ButtonType() ButtonType {
 	return ButtonTypeSwitchInlineQuery
 }
@@ -61,6 +73,10 @@ func (b SwitchInlineQueryButton) GetText() string {
 type SwitchInlineQueryCurrentChatButton struct {
 	Text  string
 	Query string
+}
+
+func NewSwitchInlineQueryCurrentChatButton(text, query string) *SwitchInlineQueryCurrentChatButton {
+	return &SwitchInlineQueryCurrentChatButton{Text: text, Query: query}
 }
 
 func (SwitchInlineQueryCurrentChatButton) ButtonType() ButtonType {
