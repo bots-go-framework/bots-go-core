@@ -5,6 +5,87 @@ import (
 	"testing"
 )
 
+func TestNewOnetimeKeyboard(t *testing.T) {
+	tests := []struct {
+		name    string
+		buttons [][]Button
+		want    *MessageKeyboard
+	}{
+		{
+			name:    "Empty onetime keyboard",
+			buttons: [][]Button{},
+			want: &MessageKeyboard{
+				kbType:    KeyboardTypeBottom,
+				isOneTime: true,
+				Buttons:   [][]Button{},
+			},
+		},
+		{
+			name: "Onetime keyboard with one row of data buttons",
+			buttons: [][]Button{
+				{
+					&DataButton{Text: "Button 1", Data: "data1"},
+					&DataButton{Text: "Button 2", Data: "data2"},
+				},
+			},
+			want: &MessageKeyboard{
+				kbType:    KeyboardTypeBottom,
+				isOneTime: true,
+				Buttons: [][]Button{
+					{
+						&DataButton{Text: "Button 1", Data: "data1"},
+						&DataButton{Text: "Button 2", Data: "data2"},
+					},
+				},
+			},
+		},
+		{
+			name: "Onetime keyboard with multiple rows of mixed buttons",
+			buttons: [][]Button{
+				{
+					&DataButton{Text: "Button 1", Data: "data1"},
+					&UrlButton{Text: "URL 1", URL: "https://example.com"},
+				},
+				{
+					&DataButton{Text: "Button 2", Data: "data2"},
+				},
+			},
+			want: &MessageKeyboard{
+				kbType:    KeyboardTypeBottom,
+				isOneTime: true,
+				Buttons: [][]Button{
+					{
+						&DataButton{Text: "Button 1", Data: "data1"},
+						&UrlButton{Text: "URL 1", URL: "https://example.com"},
+					},
+					{
+						&DataButton{Text: "Button 2", Data: "data2"},
+					},
+				},
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := NewOnetimeKeyboard(tt.buttons...)
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("NewOnetimeKeyboard() = %v, want %v", got, tt.want)
+			}
+
+			// Test the KeyboardType method
+			if got.KeyboardType() != KeyboardTypeBottom {
+				t.Errorf("MessageKeyboard.KeyboardType() = %v, want %v", got.KeyboardType(), KeyboardTypeBottom)
+			}
+
+			// Test the IsOneTime method
+			if !got.IsOneTime() {
+				t.Errorf("MessageKeyboard.IsOneTime() = %v, want true", got.IsOneTime())
+			}
+		})
+	}
+}
+
 func TestNewMessageKeyboard(t *testing.T) {
 	tests := []struct {
 		name    string

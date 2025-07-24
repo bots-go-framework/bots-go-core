@@ -35,8 +35,13 @@ type Keyboard interface {
 var _ Keyboard = (*MessageKeyboard)(nil)
 
 type MessageKeyboard struct {
-	kbType  KeyboardType
-	Buttons [][]Button
+	kbType    KeyboardType
+	isOneTime bool
+	Buttons   [][]Button
+}
+
+func (k MessageKeyboard) IsOneTime() bool {
+	return k.isOneTime
 }
 
 func (k MessageKeyboard) KeyboardType() KeyboardType {
@@ -48,4 +53,10 @@ func NewMessageKeyboard(kbType KeyboardType, buttons ...[]Button) *MessageKeyboa
 		kbType:  kbType,
 		Buttons: buttons,
 	}
+}
+
+func NewOnetimeKeyboard(buttons ...[]Button) *MessageKeyboard {
+	kb := NewMessageKeyboard(KeyboardTypeBottom, buttons...)
+	kb.isOneTime = true
+	return kb
 }
