@@ -14,6 +14,7 @@ const (
 	ButtonTypeSwitchInlineQuery
 	ButtonTypeSwitchInlineQueryCurrentChat
 	ButtonTypeCopyText
+	ButtonTypeSwitchInlineQueryChosenChat
 )
 
 var _ Button = (*TextButton)(nil)
@@ -22,6 +23,7 @@ var _ Button = (*UrlButton)(nil)
 var _ Button = (*SwitchInlineQueryButton)(nil)
 var _ Button = (*SwitchInlineQueryCurrentChatButton)(nil)
 var _ Button = (*CopyTextButton)(nil)
+var _ Button = (*SwitchInlineQueryChosenChatButton)(nil)
 
 // ButtonStyle controls the color Telegram uses for an inline keyboard button.
 //
@@ -149,6 +151,32 @@ func (SwitchInlineQueryCurrentChatButton) ButtonType() ButtonType {
 }
 
 func (b SwitchInlineQueryCurrentChatButton) GetText() string {
+	return b.Text
+}
+
+// SwitchInlineQueryChosenChatButton asks the user to choose a chat before
+// opening the bot in inline mode there. The allow fields mirror Telegram's
+// switch_inline_query_chosen_chat filters while keeping botkb independent of
+// Telegram API types.
+type SwitchInlineQueryChosenChatButton struct {
+	InlineButtonAppearance
+	Text              string `json:"text"`
+	Query             string `json:"query"`
+	AllowUserChats    bool   `json:"allow_user_chats,omitempty"`
+	AllowBotChats     bool   `json:"allow_bot_chats,omitempty"`
+	AllowGroupChats   bool   `json:"allow_group_chats,omitempty"`
+	AllowChannelChats bool   `json:"allow_channel_chats,omitempty"`
+}
+
+func NewSwitchInlineQueryChosenChatButton(text, query string) *SwitchInlineQueryChosenChatButton {
+	return &SwitchInlineQueryChosenChatButton{Text: text, Query: query}
+}
+
+func (SwitchInlineQueryChosenChatButton) ButtonType() ButtonType {
+	return ButtonTypeSwitchInlineQueryChosenChat
+}
+
+func (b SwitchInlineQueryChosenChatButton) GetText() string {
 	return b.Text
 }
 

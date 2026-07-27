@@ -232,6 +232,25 @@ func TestSwitchInlineQueryButton(t *testing.T) {
 	}
 }
 
+func TestSwitchInlineQueryChosenChatButton(t *testing.T) {
+	button := NewSwitchInlineQueryChosenChatButton("Choose friend", "pref?i=invite")
+	button.AllowUserChats = true
+
+	if button.Text != "Choose friend" || button.Query != "pref?i=invite" {
+		t.Fatalf("chosen-chat button = %+v", button)
+	}
+	if !button.AllowUserChats || button.AllowBotChats ||
+		button.AllowGroupChats || button.AllowChannelChats {
+		t.Fatalf("chosen-chat filters = %+v", button)
+	}
+	if got := button.GetText(); got != "Choose friend" {
+		t.Fatalf("GetText() = %q", got)
+	}
+	if got := button.ButtonType(); got != ButtonTypeSwitchInlineQueryChosenChat {
+		t.Fatalf("ButtonType() = %v", got)
+	}
+}
+
 func TestSwitchInlineQueryCurrentChatButton(t *testing.T) {
 	tests := []struct {
 		name     string
